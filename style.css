@@ -1,0 +1,686 @@
+:root {
+  --primary-pink: #ff6584;
+  --deep-pink: #ff3366;
+  --soft-rose: #ff8fa3;
+  --pastel-bg-1: #ffe6ea;
+  --pastel-bg-2: #ffd1dc;
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --text-main: #332228;
+  --text-muted: #6b4d57;
+  --shadow-soft: 0 12px 36px rgba(255, 75, 110, 0.2);
+  --shadow-deep: 0 20px 40px rgba(255, 51, 102, 0.28);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #ffeef2 0%, #ffd4de 50%, #fedbe4 100%);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background Canvas */
+#heartCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Top Navigation / Controls */
+.top-controls {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  left: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.top-controls button {
+  pointer-events: auto;
+}
+
+.glass-icon-btn, .glass-btn {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 15px rgba(255, 90, 120, 0.15);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.glass-icon-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.glass-btn {
+  padding: 9px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--deep-pink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.glass-icon-btn:hover, .glass-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Container */
+.main-container {
+  width: 100%;
+  max-width: 580px;
+  padding: 20px 16px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+/* Stages */
+.hidden-stage {
+  display: none !important;
+}
+
+.active-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* GIAI ĐOẠN 1: PHONG BÌ */
+.envelope-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.envelope {
+  width: 270px;
+  height: 180px;
+  background: #f7a5b6;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 16px 32px rgba(255, 75, 110, 0.28);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.envelope:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.envelope-pocket {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 135px 105px 135px;
+  border-color: transparent transparent #ff7f9d transparent;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  z-index: 3;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 105px 135px 0 135px;
+  border-color: #ff688b transparent transparent transparent;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  transform-origin: top center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 4;
+}
+
+.envelope-letter-preview {
+  position: absolute;
+  width: 230px;
+  height: 130px;
+  background: #fffdf9;
+  border-radius: 8px;
+  top: 25px;
+  z-index: 2;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.envelope-heart-seal {
+  position: absolute;
+  top: 85px;
+  z-index: 5;
+  width: 50px;
+  height: 50px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 6px 16px rgba(255, 33, 85, 0.35);
+  cursor: pointer;
+  animation: heartPulse 1.4s infinite ease-in-out;
+  transition: transform 0.2s ease;
+}
+
+.envelope-heart-seal:hover {
+  transform: scale(1.18);
+}
+
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.guide-text {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-align: center;
+  animation: bounceLight 2s infinite ease-in-out;
+}
+
+@keyframes bounceLight {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.tag-to {
+  font-size: 1.15rem;
+  color: var(--deep-pink);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 6px 20px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(255, 75, 110, 0.15);
+}
+
+/* CARDS GLASSMORPHISM */
+.glass-card {
+  width: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 32px 24px;
+  box-shadow: var(--shadow-deep);
+  text-align: center;
+  position: relative;
+}
+
+/* GIAI ĐOẠN 2: HỘP TỎ TÌNH */
+.avatar-box {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.cute-gif {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.3s ease;
+}
+
+.floating-bubble {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 1.6rem;
+  animation: floatBubble 2s infinite ease-in-out;
+}
+
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(8deg); }
+}
+
+.sender-headline {
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.highlight {
+  color: var(--deep-pink);
+  font-family: 'Pacifico', cursive;
+  font-weight: normal;
+  display: inline-block;
+  padding: 0 4px;
+}
+
+.confession-quote {
+  font-size: clamp(0.95rem, 3.5vw, 1.08rem);
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.main-question {
+  font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+  font-weight: 800;
+  color: var(--deep-pink);
+  margin: 18px 0 24px 0;
+  line-height: 1.4;
+}
+
+/* KHU VỰC 2 NÚT TƯƠNG TÁC */
+.buttons-playground {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  min-height: 80px;
+  position: relative;
+  margin-bottom: 10px;
+  touch-action: none;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background 0.25s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+  color: #ffffff;
+  padding: 14px 28px;
+  font-size: clamp(1.05rem, 3.8vw, 1.25rem);
+  box-shadow: 0 8px 24px rgba(255, 65, 108, 0.4);
+  z-index: 5;
+}
+
+.btn-yes:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px rgba(255, 65, 108, 0.55);
+}
+
+.btn-no {
+  background: #f1f3f5;
+  color: #636e72;
+  padding: 12px 24px;
+  font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  z-index: 4;
+  transition: left 0.2s ease, top 0.2s ease, transform 0.2s ease;
+}
+
+.hint-small {
+  font-size: 0.8rem;
+  color: #a0828c;
+  margin-top: 10px;
+}
+
+/* GIAI ĐOẠN 3: KHI ĐÃ ĐỒNG Ý */
+.celebrate-badge {
+  display: inline-block;
+  background: #ffe3e8;
+  color: var(--deep-pink);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 6px 16px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(255, 75, 110, 0.15);
+}
+
+.happy-couple-icon {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+  animation: pulseRotate 2.5s infinite ease-in-out;
+}
+
+@keyframes pulseRotate {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(4deg); }
+}
+
+.success-title {
+  font-size: clamp(1.4rem, 4.5vw, 1.85rem);
+  font-weight: 800;
+  color: var(--deep-pink);
+  margin-bottom: 20px;
+}
+
+.love-letter-paper {
+  background: #fffdf9;
+  border: 1px dashed #f2b4c1;
+  border-radius: 18px;
+  padding: 24px 20px 20px;
+  position: relative;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+}
+
+.paper-pin {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.4rem;
+}
+
+.love-letter-content {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.25rem, 4.5vw, 1.55rem);
+  color: #442a32;
+  line-height: 1.75;
+  white-space: pre-line;
+  margin-bottom: 16px;
+}
+
+.letter-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.letter-footer strong {
+  font-size: 1.15rem;
+  color: var(--deep-pink);
+  font-family: 'Pacifico', cursive;
+}
+
+.after-action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--text-muted);
+  border: 1.5px solid #ffd1dc;
+  padding: 10px 20px;
+  font-size: 0.92rem;
+}
+
+.btn-secondary:hover {
+  background: #fff0f3;
+}
+
+.btn-primary {
+  background: var(--deep-pink);
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 0.92rem;
+  box-shadow: 0 6px 18px rgba(255, 51, 102, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 51, 102, 0.45);
+}
+
+/* MODAL TẠO LINK CHIA SẺ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(40, 20, 28, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.open {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  animation: modalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.modal-header h3 {
+  font-size: 1.25rem;
+  color: var(--deep-pink);
+  font-weight: 800;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #a4b0be;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 6px;
+}
+
+.btn-close:hover {
+  color: #2f3542;
+}
+
+.modal-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #f1c7d2;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fffbfa;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+  border-color: var(--deep-pink);
+  box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.15);
+  background: #ffffff;
+}
+
+.generated-link-box {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed #f2b4c1;
+  text-align: left;
+}
+
+.generated-link-box label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.copy-field {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.copy-field input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e0b0bc;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  background: #fff5f7;
+  color: #555;
+  outline: none;
+}
+
+.btn-copy {
+  background: var(--deep-pink);
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  border-radius: 10px;
+}
+
+.btn-copy:hover {
+  background: #e02456;
+}
+
+.toast-msg {
+  display: block;
+  font-size: 0.8rem;
+  color: #2ed573;
+  font-weight: 700;
+  margin-top: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.toast-msg.show {
+  opacity: 1;
+}
+
+/* RESPONSIVE QUERIES */
+@media (max-width: 480px) {
+  .envelope {
+    width: 240px;
+    height: 160px;
+  }
+  .envelope-pocket {
+    border-width: 0 120px 95px 120px;
+  }
+  .envelope-flap {
+    border-width: 95px 120px 0 120px;
+  }
+  .envelope-letter-preview {
+    width: 200px;
+    height: 110px;
+  }
+  .glass-card {
+    padding: 26px 18px;
+    border-radius: 22px;
+  }
+  .cute-gif {
+    width: 100px;
+    height: 100px;
+  }
+  .buttons-playground {
+    gap: 12px;
+  }
+  .btn-yes {
+    padding: 12px 22px;
+  }
+  .btn-no {
+    padding: 10px 18px;
+  }
+}

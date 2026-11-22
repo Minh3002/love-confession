@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Gửi người tớ thương ❤️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas nền hiệu ứng trái tim bay -->
+  <canvas id="heartCanvas"></canvas>
+
+  <!-- Nút tiện ích góc trên -->
+  <div class="top-controls">
+    <button id="musicToggleBtn" class="glass-icon-btn" title="Bật/Tắt nhạc" aria-label="Bật tắt âm nhạc">
+      <span id="musicIcon">🎵</span>
+    </button>
+    <button id="openShareModalBtn" class="glass-btn btn-share" title="Tạo link gửi cho người khác">
+      <span>✨ Tạo link tỏ tình</span>
+    </button>
+  </div>
+
+  <main class="main-container">
+    <!-- GIAI ĐOẠN 1: PHONG BÌ THƯ BÍ MẬT -->
+    <section id="envelopeSection" class="active-stage">
+      <div class="envelope-wrapper" id="envelopeCard">
+        <div class="envelope">
+          <div class="envelope-flap"></div>
+          <div class="envelope-pocket"></div>
+          <div class="envelope-letter-preview">
+            <span>💌</span>
+          </div>
+          <div class="envelope-heart-seal" id="openEnvelopeBtn">
+            <span>❤️</span>
+          </div>
+        </div>
+        <p class="guide-text">Chạm vào trái tim để mở thư bí mật nhé!</p>
+        <p class="tag-to">Gửi: <strong class="crush-name-text">Cậu</strong></p>
+      </div>
+    </section>
+
+    <!-- GIAI ĐOẠN 2: CÂU HỎI TỎ TÌNH TƯƠNG TÁC -->
+    <section id="questionSection" class="hidden-stage">
+      <div class="glass-card confession-box">
+        <div class="avatar-box">
+          <div class="floating-bubble">💖</div>
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80" alt="Cute Hearts" class="cute-gif" id="statusImage">
+        </div>
+
+        <h1 class="sender-headline">
+          Chào <span class="highlight crush-name-text">Cậu</span>! ✨
+        </h1>
+        
+        <p class="confession-quote" id="confessionIntro">
+          Tớ có điều này ấp ủ từ lâu lắm rồi, hôm nay mới gom đủ can đảm để nói với cậu...
+        </p>
+
+        <h2 class="main-question">
+          Cậu có đồng ý làm người yêu tớ không? 🥺👉👈
+        </h2>
+
+        <div class="buttons-playground" id="playground">
+          <button id="yesBtn" class="btn btn-yes">
+            <span>Đồng ý luôn! ❤️</span>
+          </button>
+          <button id="noBtn" class="btn btn-no">
+            <span id="noBtnText">Không nha 😜</span>
+          </button>
+        </div>
+
+        <p class="hint-small">*Nút "Không" có vẻ hơi bướng bỉnh đấy nhé!*</p>
+      </div>
+    </section>
+
+    <!-- GIAI ĐOẠN 3: KHI BẤM ĐỒNG Ý - THIỆP CHÚC MỪNG VÀ PHÁO HOA -->
+    <section id="acceptedSection" class="hidden-stage">
+      <div class="glass-card success-box">
+        <div class="celebrate-badge">🎉 YÊUUU QUÁAA! 🎉</div>
+        
+        <div class="happy-couple-icon">
+          <span>👩‍❤️‍👨</span>
+        </div>
+
+        <h2 class="success-title">
+          Yeahhh! Cảm ơn <span class="highlight crush-name-text">cậu</span> vì đã đồng ý! 🥰
+        </h2>
+
+        <div class="love-letter-paper">
+          <div class="paper-pin">📌</div>
+          <p class="love-letter-content" id="loveMessageBody">
+            Từ giây phút này, cậu chính là điều tuyệt vời nhất của tớ. Tớ hứa sẽ luôn quan tâm, yêu thương, lắng nghe và mang lại thật nhiều nụ cười cho cậu mỗi ngày! 💕
+          </p>
+          <div class="letter-footer">
+            <span>Thương cậu thật nhiều,</span>
+            <strong id="senderNameText">Người gửi giấu tên</strong>
+          </div>
+        </div>
+
+        <div class="after-action-buttons">
+          <button id="replayBtn" class="btn btn-secondary">Xem lại từ đầu 🔄</button>
+          <button id="shareAgainBtn" class="btn btn-primary">Tạo link gửi người khác 🚀</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: CÔNG CỤ TẠO LINK TỰ ĐỘNG GỬI CHO NHIỀU NGƯỜI -->
+  <div id="shareModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>✨ Tùy chỉnh link tỏ tình</h3>
+        <button id="closeModalBtn" class="btn-close" aria-label="Đóng">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-desc">
+          Bạn có thể nhập tên và lời nhắn để tạo đường link độc quyền gửi cho bất kỳ ai!
+        </p>
+
+        <div class="form-group">
+          <label for="inputCrushName">Tên người nhận (Crush):</label>
+          <input type="text" id="inputCrushName" placeholder="VD: Lan Anh, Bé Mèo, Em yêu..." maxlength="30">
+        </div>
+
+        <div class="form-group">
+          <label for="inputSenderName">Tên người gửi (Bạn):</label>
+          <input type="text" id="inputSenderName" placeholder="VD: Hoàng Long, Chàng ngốc của em..." maxlength="30">
+        </div>
+
+        <div class="form-group">
+          <label for="inputCustomMsg">Lời nhắn gửi khi người ấy đồng ý:</label>
+          <textarea id="inputCustomMsg" rows="3" placeholder="Nhập lời tâm tình ngọt ngào của bạn..."></textarea>
+        </div>
+
+        <div class="generated-link-box">
+          <label>Đường link của bạn:</label>
+          <div class="copy-field">
+            <input type="text" id="generatedUrlInput" readonly>
+            <button id="copyUrlBtn" class="btn btn-copy">Copy link</button>
+          </div>
+          <span id="copyToast" class="toast-msg">Đã sao chép link thành công! ✅</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
