@@ -289,6 +289,7 @@ const playground = document.getElementById('playground');
 
 let dodgeCount = 0;
 let yesScale = 1;
+let lastPositionIndex = -1;
 
 const naughtyQuotes = [
   'Nghĩ lại đii! 🥺',
@@ -311,23 +312,39 @@ function dodgeButton(e) {
   dodgeCount++;
   noBtnText.textContent = naughtyQuotes[dodgeCount % naughtyQuotes.length];
 
-  yesScale = Math.min(yesScale + 0.12, 1.8);
+  // Nút "Không" chuyển sang absolute để nút "Đồng ý" đứng CHÍNH GIỮA 100%
+  if (dodgeCount === 1) {
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = '50%';
+    noBtn.style.top = '50%';
+  }
+
+  // Phóng to dần nút "Đồng ý" ngay tại chính giữa trung tâm
+  yesScale = Math.min(yesScale + 0.14, 1.85);
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  const padding = 20;
-  const btnWidth = noBtn.offsetWidth || 120;
-  const btnHeight = noBtn.offsetHeight || 44;
+  // Các vị trí né tránh thông minh xung quanh nút "Đồng ý" ở giữa
+  const isMobile = window.innerWidth < 480;
+  const offsetX = isMobile ? 85 : 130;
+  const offsetY = isMobile ? 55 : 68;
 
-  const maxX = window.innerWidth - btnWidth - padding;
-  const maxY = window.innerHeight - btnHeight - padding;
+  const positions = [
+    { x: -offsetX, y: -offsetY }, // Góc trên trái
+    { x: offsetX, y: -offsetY },  // Góc trên phải
+    { x: -offsetX, y: offsetY },  // Góc dưới trái
+    { x: offsetX, y: offsetY },   // Góc dưới phải
+    { x: 0, y: offsetY + 15 },    // Phía dưới
+    { x: 0, y: -offsetY - 15 }    // Phía trên
+  ];
 
-  const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-  const randomY = Math.max(padding + 60, Math.floor(Math.random() * maxY));
+  let nextIndex;
+  do {
+    nextIndex = Math.floor(Math.random() * positions.length);
+  } while (nextIndex === lastPositionIndex);
+  lastPositionIndex = nextIndex;
 
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = `${randomX}px`;
-  noBtn.style.top = `${randomY}px`;
-  noBtn.style.zIndex = '999';
+  const target = positions[nextIndex];
+  noBtn.style.transform = `translate(calc(-50% + ${target.x}px), calc(-50% + ${target.y}px))`;
 }
 
 noBtn.addEventListener('mouseenter', dodgeButton);
