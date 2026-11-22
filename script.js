@@ -18,7 +18,7 @@ function applyConfig() {
   document.querySelectorAll('.crush-name-text').forEach(el => {
     el.textContent = CONFIG.to;
   });
-  
+
   const senderEl = document.getElementById('senderNameText');
   if (senderEl) senderEl.textContent = CONFIG.from;
 
@@ -139,7 +139,7 @@ class ConfettiParticle {
 
 function loopAnimation() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   // Vẽ nền trái tim bay
   hearts.forEach(h => {
     h.update();
@@ -196,16 +196,16 @@ function playMelodyNote(freq, duration = 0.5, type = 'sine') {
   if (!audioCtx) return;
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
-  
+
   osc.type = type;
   osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-  
+
   gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
   gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-  
+
   osc.connect(gain);
   gain.connect(audioCtx.destination);
-  
+
   osc.start();
   osc.stop(audioCtx.currentTime + duration);
 }
@@ -257,7 +257,7 @@ function openLetter() {
   initAudio();
   const flap = document.querySelector('.envelope-flap');
   const letter = document.querySelector('.envelope-letter-preview');
-  
+
   flap.style.transform = 'rotateX(180deg)';
   flap.style.zIndex = '1';
   letter.style.transform = 'translateY(-60px)';
@@ -268,7 +268,7 @@ function openLetter() {
 
     questionSection.classList.remove('hidden-stage');
     questionSection.classList.add('active-stage');
-    
+
     if (!isMusicPlaying) toggleMusic();
   }, 700);
 }
