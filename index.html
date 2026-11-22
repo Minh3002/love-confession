@@ -18,9 +18,6 @@
     <button id="musicToggleBtn" class="glass-icon-btn" title="Bật/Tắt nhạc" aria-label="Bật tắt âm nhạc">
       <span id="musicIcon">🎵</span>
     </button>
-    <button id="openShareModalBtn" class="glass-btn btn-share" title="Tạo link gửi cho người khác">
-      <span>✨ Tạo link tỏ tình</span>
-    </button>
   </div>
 
   <main class="main-container">
@@ -38,7 +35,7 @@
           </div>
         </div>
         <p class="guide-text">Chạm vào trái tim để mở thư bí mật nhé!</p>
-        <p class="tag-to">Gửi: <strong class="crush-name-text">Cậu</strong></p>
+        <p class="tag-to">Gửi: <strong class="crush-name-text">Kim Phụng</strong></p>
       </div>
     </section>
 
@@ -51,7 +48,7 @@
         </div>
 
         <h1 class="sender-headline">
-          Chào <span class="highlight crush-name-text">Cậu</span>! ✨
+          Chào <span class="highlight crush-name-text">Kim Phụng</span>! ✨
         </h1>
         
         <p class="confession-quote" id="confessionIntro">
@@ -85,67 +82,26 @@
         </div>
 
         <h2 class="success-title">
-          Yeahhh! Cảm ơn <span class="highlight crush-name-text">cậu</span> vì đã đồng ý! 🥰
+          Yeahhh! Cảm ơn <span class="highlight crush-name-text">Kim Phụng</span> vì đã đồng ý! 🥰
         </h2>
 
         <div class="love-letter-paper">
           <div class="paper-pin">📌</div>
           <p class="love-letter-content" id="loveMessageBody">
-            Từ giây phút này, cậu chính là điều tuyệt vời nhất của tớ. Tớ hứa sẽ luôn quan tâm, yêu thương, lắng nghe và mang lại thật nhiều nụ cười cho cậu mỗi ngày! 💕
+            Từ giây phút này, cậu chính là điều ngọt ngào nhất trong cuộc sống của tớ. Tớ hứa sẽ luôn quan tâm, yêu thương, lắng nghe và mang lại thật nhiều niềm vui cho cậu mỗi ngày! 💕
           </p>
           <div class="letter-footer">
             <span>Thương cậu thật nhiều,</span>
-            <strong id="senderNameText">Người gửi giấu tên</strong>
+            <strong id="senderNameText">Minh</strong>
           </div>
         </div>
 
         <div class="after-action-buttons">
           <button id="replayBtn" class="btn btn-secondary">Xem lại từ đầu 🔄</button>
-          <button id="shareAgainBtn" class="btn btn-primary">Tạo link gửi người khác 🚀</button>
         </div>
       </div>
     </section>
   </main>
-
-  <!-- MODAL: CÔNG CỤ TẠO LINK TỰ ĐỘNG GỬI CHO NHIỀU NGƯỜI -->
-  <div id="shareModal" class="modal-overlay">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>✨ Tùy chỉnh link tỏ tình</h3>
-        <button id="closeModalBtn" class="btn-close" aria-label="Đóng">&times;</button>
-      </div>
-
-      <div class="modal-body">
-        <p class="modal-desc">
-          Bạn có thể nhập tên và lời nhắn để tạo đường link độc quyền gửi cho bất kỳ ai!
-        </p>
-
-        <div class="form-group">
-          <label for="inputCrushName">Tên người nhận (Crush):</label>
-          <input type="text" id="inputCrushName" placeholder="VD: Lan Anh, Bé Mèo, Em yêu..." maxlength="30">
-        </div>
-
-        <div class="form-group">
-          <label for="inputSenderName">Tên người gửi (Bạn):</label>
-          <input type="text" id="inputSenderName" placeholder="VD: Hoàng Long, Chàng ngốc của em..." maxlength="30">
-        </div>
-
-        <div class="form-group">
-          <label for="inputCustomMsg">Lời nhắn gửi khi người ấy đồng ý:</label>
-          <textarea id="inputCustomMsg" rows="3" placeholder="Nhập lời tâm tình ngọt ngào của bạn..."></textarea>
-        </div>
-
-        <div class="generated-link-box">
-          <label>Đường link của bạn:</label>
-          <div class="copy-field">
-            <input type="text" id="generatedUrlInput" readonly>
-            <button id="copyUrlBtn" class="btn btn-copy">Copy link</button>
-          </div>
-          <span id="copyToast" class="toast-msg">Đã sao chép link thành công! ✅</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="script.js"></script>
 </body>

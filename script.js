@@ -1,34 +1,38 @@
-// ==========================================
-// 1. QUẢN LÝ DỮ LIỆU TÙY BIẾN (URL PARAMETERS)
-// ==========================================
-const urlParams = new URLSearchParams(window.location.search);
+// =========================================================================
+// ⚙️ KHU VỰC CẤU HÌNH THÔNG TIN (BẠN TỰ CHỈNH SỬA TẠI ĐÂY)
+// =========================================================================
+const CONFIG = {
+  // 1. Tên người nhận (Crush):
+  to: "Kim Phụng",
 
-const defaultData = {
-  to: urlParams.get('to') || urlParams.get('crush') || 'Cậu',
-  from: urlParams.get('from') || urlParams.get('sender') || 'Tớ nè',
-  msg: urlParams.get('msg') || 'Từ giây phút này, cậu chính là điều ngọt ngào nhất trong cuộc sống của tớ. Tớ hứa sẽ luôn quan tâm, yêu thương, lắng nghe và mang lại thật nhiều niềm vui cho cậu mỗi ngày! 💕'
+  // 2. Tên người gửi (Bạn):
+  from: "Minh",
+
+  // 3. Lời nhắn gửi sau khi người ấy bấm "Đồng ý":
+  msg: `Từ giây phút này, cậu chính là điều ngọt ngào nhất trong cuộc sống của tớ. Tớ hứa sẽ luôn quan tâm, yêu thương, lắng nghe và mang lại thật nhiều niềm vui cho cậu mỗi ngày! 💕`
 };
+// =========================================================================
 
-// Cập nhật DOM ban đầu
-function applyDataToView(data) {
+// Cập nhật thông tin ra màn hình
+function applyConfig() {
   document.querySelectorAll('.crush-name-text').forEach(el => {
-    el.textContent = data.to;
+    el.textContent = CONFIG.to;
   });
   
   const senderEl = document.getElementById('senderNameText');
-  if (senderEl) senderEl.textContent = data.from;
+  if (senderEl) senderEl.textContent = CONFIG.from;
 
   const msgEl = document.getElementById('loveMessageBody');
-  if (msgEl) msgEl.textContent = data.msg;
+  if (msgEl) msgEl.textContent = CONFIG.msg;
 
-  // Cập nhật thẻ title trình duyệt
-  document.title = `Gửi ${data.to} ❤️ Điều tớ muốn nói...`;
+  // Cập nhật tiêu đề tab trình duyệt
+  document.title = `Gửi ${CONFIG.to} ❤️ Điều tớ muốn nói...`;
 }
 
-applyDataToView(defaultData);
+applyConfig();
 
 // ==========================================
-// 2. HIỆU ỨNG CANVAS TRÁI TIM BAY (BACKGROUND)
+// 1. HIỆU ỨNG CANVAS TRÁI TIM BAY (BACKGROUND)
 // ==========================================
 const canvas = document.getElementById('heartCanvas');
 const ctx = canvas.getContext('2d');
@@ -167,14 +171,13 @@ function triggerConfettiShower() {
   for (let i = 0; i < 120; i++) {
     confettiList.push(new ConfettiParticle());
   }
-  // Tự dừng bắn thêm sau 7 giây
   setTimeout(() => {
     isConfettiActive = false;
   }, 7000);
 }
 
 // ==========================================
-// 3. ÂM THANH LÃNG MẠN (WEB AUDIO SYNTHESIZER)
+// 2. ÂM THANH LÃNG MẠN (WEB AUDIO SYNTHESIZER)
 // ==========================================
 let audioCtx = null;
 let isMusicPlaying = false;
@@ -189,7 +192,6 @@ function initAudio() {
   }
 }
 
-// Tạo nốt nhạc ngọt ngào
 function playMelodyNote(freq, duration = 0.5, type = 'sine') {
   if (!audioCtx) return;
   const osc = audioCtx.createOscillator();
@@ -208,7 +210,6 @@ function playMelodyNote(freq, duration = 0.5, type = 'sine') {
   osc.stop(audioCtx.currentTime + duration);
 }
 
-// Chuỗi nốt nhạc lãng mạn lofi lặp lại nhẹ nhàng
 const romanticNotes = [
   523.25, 587.33, 659.25, 783.99, 880.00, 659.25, 783.99, 1046.50
 ];
@@ -233,7 +234,6 @@ function toggleMusic() {
 
 document.getElementById('musicToggleBtn').addEventListener('click', toggleMusic);
 
-// Âm thanh chúc mừng vui nhộn khi đồng ý
 function playSuccessChime() {
   initAudio();
   const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51];
@@ -245,7 +245,7 @@ function playSuccessChime() {
 }
 
 // ==========================================
-// 4. CHUYỂN ĐỔI GIAI ĐOẠN (STAGES)
+// 3. CHUYỂN ĐỔI GIAI ĐOẠN (STAGES)
 // ==========================================
 const envelopeSection = document.getElementById('envelopeSection');
 const questionSection = document.getElementById('questionSection');
@@ -255,7 +255,6 @@ const openEnvelopeBtn = document.getElementById('openEnvelopeBtn');
 
 function openLetter() {
   initAudio();
-  // Animation mở nắp phong bì
   const flap = document.querySelector('.envelope-flap');
   const letter = document.querySelector('.envelope-letter-preview');
   
@@ -270,7 +269,6 @@ function openLetter() {
     questionSection.classList.remove('hidden-stage');
     questionSection.classList.add('active-stage');
     
-    // Tự động bật nhạc nhẹ nếu chưa bật
     if (!isMusicPlaying) toggleMusic();
   }, 700);
 }
@@ -282,7 +280,7 @@ openEnvelopeBtn.addEventListener('click', (e) => {
 });
 
 // ==========================================
-// 5. NÚT "KHÔNG NHA" CHẠY TRỐN THÔNG MINH
+// 4. NÚT "KHÔNG NHA" CHẠY TRỐN THÔNG MINH
 // ==========================================
 const noBtn = document.getElementById('noBtn');
 const yesBtn = document.getElementById('yesBtn');
@@ -311,14 +309,11 @@ function dodgeButton(e) {
   }
 
   dodgeCount++;
-  // Đổi chữ trên nút
   noBtnText.textContent = naughtyQuotes[dodgeCount % naughtyQuotes.length];
 
-  // Phóng to dần nút "Đồng ý"
   yesScale = Math.min(yesScale + 0.12, 1.8);
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  // Tính vị trí an toàn trên màn hình (đảm bảo không lọt ra ngoài mép và không dính nút Yes)
   const padding = 20;
   const btnWidth = noBtn.offsetWidth || 120;
   const btnHeight = noBtn.offsetHeight || 44;
@@ -335,13 +330,12 @@ function dodgeButton(e) {
   noBtn.style.zIndex = '999';
 }
 
-// Bắt sự kiện rê chuột & chạm cảm ứng trên di động
 noBtn.addEventListener('mouseenter', dodgeButton);
 noBtn.addEventListener('touchstart', dodgeButton, { passive: false });
 noBtn.addEventListener('click', dodgeButton);
 
 // ==========================================
-// 6. XỬ LÝ KHI BẤM "ĐỒNG Ý LUÔN"
+// 5. XỬ LÝ KHI BẤM "ĐỒNG Ý LUÔN"
 // ==========================================
 yesBtn.addEventListener('click', () => {
   playSuccessChime();
@@ -357,79 +351,4 @@ yesBtn.addEventListener('click', () => {
 // Xem lại từ đầu
 document.getElementById('replayBtn').addEventListener('click', () => {
   location.reload();
-});
-
-// ==========================================
-// 7. MODAL TẠO LINK CHIA SẺ CHO NHIỀU NGƯỜI
-// ==========================================
-const shareModal = document.getElementById('shareModal');
-const openShareModalBtn = document.getElementById('openShareModalBtn');
-const shareAgainBtn = document.getElementById('shareAgainBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
-
-const inputCrushName = document.getElementById('inputCrushName');
-const inputSenderName = document.getElementById('inputSenderName');
-const inputCustomMsg = document.getElementById('inputCustomMsg');
-const generatedUrlInput = document.getElementById('generatedUrlInput');
-const copyUrlBtn = document.getElementById('copyUrlBtn');
-const copyToast = document.getElementById('copyToast');
-
-function updateGeneratedUrl() {
-  const toVal = inputCrushName.value.trim() || 'Cậu';
-  const fromVal = inputSenderName.value.trim() || 'Tớ';
-  const msgVal = inputCustomMsg.value.trim();
-
-  const baseUrl = window.location.origin + window.location.pathname;
-  const params = new URLSearchParams();
-  params.set('to', toVal);
-  params.set('from', fromVal);
-  if (msgVal) {
-    params.set('msg', msgVal);
-  }
-
-  generatedUrlInput.value = `${baseUrl}?${params.toString()}`;
-}
-
-function openModal() {
-  inputCrushName.value = defaultData.to === 'Cậu' ? '' : defaultData.to;
-  inputSenderName.value = defaultData.from === 'Tớ nè' ? '' : defaultData.from;
-  inputCustomMsg.value = defaultData.msg;
-  updateGeneratedUrl();
-
-  shareModal.classList.add('open');
-}
-
-function closeModal() {
-  shareModal.classList.remove('open');
-  copyToast.classList.remove('show');
-}
-
-openShareModalBtn.addEventListener('click', openModal);
-shareAgainBtn.addEventListener('click', openModal);
-closeModalBtn.addEventListener('click', closeModal);
-
-shareModal.addEventListener('click', (e) => {
-  if (e.target === shareModal) closeModal();
-});
-
-// Khi gõ vào input form thì URL tự động cập nhật ngay
-[inputCrushName, inputSenderName, inputCustomMsg].forEach(input => {
-  input.addEventListener('input', updateGeneratedUrl);
-});
-
-// Sao chép link vào Clipboard
-copyUrlBtn.addEventListener('click', () => {
-  generatedUrlInput.select();
-  generatedUrlInput.setSelectionRange(0, 99999); // Dành cho điện thoại
-
-  navigator.clipboard.writeText(generatedUrlInput.value).then(() => {
-    copyToast.classList.add('show');
-    setTimeout(() => {
-      copyToast.classList.remove('show');
-    }, 2500);
-  }).catch(() => {
-    // Dự phòng phương thức cũ
-    document.execCommand('copy');
-    copyToast.classList.add('show');
-  });
 });
