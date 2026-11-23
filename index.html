@@ -2,105 +2,200 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Gửi người tớ thương ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Gửi Kim Phụng ❤️ Lời từ trái tim</title>
+  
+  <!-- Google Fonts: Pacifico, Dancing Script & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Pacifico&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Canvas nền hiệu ứng trái tim bay -->
-  <canvas id="heartCanvas"></canvas>
+  <!-- Canvas nền hạt sáng & trái tim lung linh -->
+  <canvas id="ambientCanvas"></canvas>
 
-  <!-- Nút tiện ích góc trên -->
-  <div class="top-controls">
-    <button id="musicToggleBtn" class="glass-icon-btn" title="Bật/Tắt nhạc" aria-label="Bật tắt âm nhạc">
-      <span id="musicIcon">🎵</span>
-    </button>
+  <!-- Đốm sáng hào quang nền (Background Glowing Blobs) -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <!-- Nút điều khiển âm thanh góc trên -->
+  <div class="music-pill" id="musicToggleBtn" title="Bật/Tắt nhạc nền du dương">
+    <div class="sound-wave" id="soundWave">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <span class="music-label" id="musicLabel">Bật nhạc chill ✨</span>
   </div>
 
-  <main class="main-container">
-    <!-- GIAI ĐOẠN 1: PHONG BÌ THƯ BÍ MẬT -->
-    <section id="envelopeSection" class="active-stage">
-      <div class="envelope-wrapper" id="envelopeCard">
-        <div class="envelope">
-          <div class="envelope-flap"></div>
-          <div class="envelope-pocket"></div>
-          <div class="envelope-letter-preview">
-            <span>💌</span>
+  <main class="app-viewport">
+    
+    <!-- ============================================== -->
+    <!-- GIAI ĐOẠN 1: BỨC THƯ TÌNH VINTAGE CÓ CON DẤU SÁP -->
+    <!-- ============================================== -->
+    <section id="envelopeStage" class="stage-container active-stage">
+      <div class="envelope-scene">
+        <div class="envelope-box" id="envelopeBox">
+          <!-- Nắp phong bì -->
+          <div class="envelope-top-flap"></div>
+          
+          <!-- Thân phong bì -->
+          <div class="envelope-main-pocket">
+            <!-- Tem bưu thiếp xinh xắn -->
+            <div class="postage-stamp">
+              <span class="stamp-heart">💖</span>
+              <span class="stamp-date">LOVE</span>
+            </div>
+            
+            <!-- Nhãn gửi người nhận -->
+            <div class="envelope-label-tag">
+              <span class="tag-title">Special Delivery For:</span>
+              <span class="tag-name crush-name-display">Kim Phụng</span>
+            </div>
           </div>
-          <div class="envelope-heart-seal" id="openEnvelopeBtn">
-            <span>❤️</span>
+
+          <!-- Bức thư nhô lên bên trong -->
+          <div class="inside-letter-card">
+            <div class="mini-letter-header">💌 Bức thư bí mật</div>
+            <p class="mini-letter-peek">Có một điều tớ đã giấu kín bấy lâu nay...</p>
+          </div>
+
+          <!-- Con dấu sáp trái tim nổi 3D -->
+          <div class="wax-seal" id="waxSealBtn" title="Chạm để bẻ con dấu mở thư">
+            <div class="wax-seal-inner">
+              <span>❤️</span>
+            </div>
           </div>
         </div>
-        <p class="guide-text">Chạm vào trái tim để mở thư bí mật nhé!</p>
-        <p class="tag-to">Gửi: <strong class="crush-name-text">Kim Phụng</strong></p>
+
+        <div class="tap-hint-wrapper">
+          <div class="finger-pulse">👆</div>
+          <p class="tap-hint-text">Chạm vào <strong class="sparkle-text">Trái tim sáp</strong> để mở thư nhé!</p>
+        </div>
       </div>
     </section>
 
-    <!-- GIAI ĐOẠN 2: CÂU HỎI TỎ TÌNH TƯƠNG TÁC -->
-    <section id="questionSection" class="hidden-stage">
-      <div class="glass-card confession-box">
-        <div class="avatar-box">
-          <div class="floating-bubble">💖</div>
-          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=400&q=80" alt="Cute Hearts" class="cute-gif" id="statusImage">
+    <!-- ============================================== -->
+    <!-- GIAI ĐOẠN 2: LỜI TỎ TÌNH & CHÚ GẤU NÀI NỈ (PERSUASION DIALOG) -->
+    <!-- ============================================== -->
+    <section id="questionStage" class="stage-container hidden-stage">
+      <div class="luxury-glass-card question-card">
+        
+        <!-- Khung nhân vật Chibi cảm xúc hoạt họa SVG -->
+        <div class="character-mascot">
+          <div class="character-halo"></div>
+          <!-- Gấu cute SVG tương tác đa biểu cảm -->
+          <div class="mascot-svg-wrapper" id="mascotWrapper">
+            <svg class="mascot-svg" viewBox="0 0 200 200" id="mascotSvg">
+              <!-- Tai trái -->
+              <ellipse id="earLeft" cx="60" cy="55" rx="25" ry="25" fill="#f8b4b4" stroke="#e07a7a" stroke-width="4"/>
+              <ellipse cx="60" cy="55" rx="14" ry="14" fill="#ffd5d5"/>
+              <!-- Tai phải -->
+              <ellipse id="earRight" cx="140" cy="55" rx="25" ry="25" fill="#f8b4b4" stroke="#e07a7a" stroke-width="4"/>
+              <ellipse cx="140" cy="55" rx="14" ry="14" fill="#ffd5d5"/>
+              <!-- Đầu gấu -->
+              <circle cx="100" cy="105" r="62" fill="#fff5f5" stroke="#e07a7a" stroke-width="4"/>
+              <!-- Má hồng -->
+              <circle cx="68" cy="118" r="10" fill="#ff7f9d" opacity="0.6"/>
+              <circle cx="132" cy="118" r="10" fill="#ff7f9d" opacity="0.6"/>
+              <!-- Nước mắt rơi khi khóc (Mặc định ẩn) -->
+              <g id="tearDrops" opacity="0">
+                <path d="M72 120 C70 128, 64 135, 68 140 C72 143, 76 138, 74 130 Z" fill="#70d6ff"/>
+                <path d="M128 120 C126 128, 120 135, 124 140 C128 143, 132 138, 130 130 Z" fill="#70d6ff"/>
+              </g>
+              <!-- Mắt -->
+              <g id="mascotEyes">
+                <ellipse cx="78" cy="98" rx="6" ry="8" fill="#442a32"/>
+                <circle cx="76" cy="95" r="2.5" fill="#ffffff"/>
+                <ellipse cx="122" cy="98" rx="6" ry="8" fill="#442a32"/>
+                <circle cx="120" cy="95" r="2.5" fill="#ffffff"/>
+              </g>
+              <!-- Mũi & miệng -->
+              <ellipse cx="100" cy="108" rx="16" ry="12" fill="#ffdede"/>
+              <ellipse cx="100" cy="104" rx="5" ry="3.5" fill="#e07a7a"/>
+              <path id="mascotMouth" d="M94 112 Q100 119 106 112" fill="none" stroke="#e07a7a" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- Đạo cụ trà sữa hoặc trái tim -->
+              <text id="floatingProp" x="90" y="32" font-size="24">💕</text>
+            </svg>
+          </div>
         </div>
 
-        <h1 class="sender-headline">
-          Chào <span class="highlight crush-name-text">Kim Phụng</span>! ✨
-        </h1>
-        
-        <p class="confession-quote" id="confessionIntro">
-          Tớ có điều này ấp ủ từ lâu lắm rồi, hôm nay mới gom đủ can đảm để nói với cậu...
-        </p>
+        <!-- Bong bóng lời thoại nài nỉ của chú Gấu (Speech Bubble) -->
+        <div class="speech-bubble-container" id="speechContainer">
+          <div class="speech-bubble" id="speechBubble">
+            <span id="speechText">Tớ thích cậu nhiều hơn cả những ngôi sao trên bầu trời đêm... 🌟</span>
+          </div>
+        </div>
 
-        <h2 class="main-question">
-          Cậu có đồng ý làm người yêu tớ không? 🥺👉👈
+        <div class="card-headings">
+          <span class="greeting-badge">Gửi riêng <strong class="crush-name-display">Kim Phụng</strong> 🌸</span>
+          <h1 class="main-confession-title" id="confessionHeading">Cậu có đồng ý làm người yêu tớ không?</h1>
+        </div>
+
+        <!-- KHU VỰC 2 NÚT THIẾT KẾ CÂN XỨNG CHUẨN 100% -->
+        <div class="buttons-layout-box" id="buttonsLayout">
+          <button id="yesBtn" class="pill-btn yes-btn" aria-label="Đồng ý">
+            <span class="btn-glow"></span>
+            <span class="btn-text" id="yesBtnText">Đồng ý luôn! 🥰</span>
+            <span class="btn-sparkles">✨</span>
+          </button>
+
+          <button id="noBtn" class="pill-btn no-btn" aria-label="Từ chối">
+            <span id="noBtnText">Không nha 🥺</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- GIAI ĐOẠN 3: KHI ĐÃ ĐỒNG Ý - THƯ TÌNH HOÀNG GIA -->
+    <!-- ============================================== -->
+    <section id="successStage" class="stage-container hidden-stage">
+      <div class="luxury-glass-card success-card">
+        
+        <div class="congrats-sparkle-badge">
+          <span>💖 CHÍNH THỨC THÀNH ĐÔI 💖</span>
+        </div>
+
+        <div class="couple-avatar-glow">
+          <div class="avatar-ring">
+            <span class="ring-heart">👩‍❤️‍👨</span>
+          </div>
+        </div>
+
+        <h2 class="yay-title">
+          Yeahhh! Cảm ơn <span class="romantic-highlight crush-name-display">Kim Phụng</span>! 🎉
         </h2>
 
-        <div class="buttons-playground" id="playground">
-          <button id="yesBtn" class="btn btn-yes">
-            <span>Đồng ý luôn! ❤️</span>
-          </button>
-          <button id="noBtn" class="btn btn-no">
-            <span id="noBtnText">Không nha 😜</span>
-          </button>
-        </div>
+        <!-- Tấm thiệp thư tay hoa văn lãng mạn -->
+        <div class="romantic-parchment">
+          <div class="parchment-corner top-left">🌸</div>
+          <div class="parchment-corner top-right">🌸</div>
+          
+          <div class="letter-salutation">
+            Gửi <em>Kim Phụng</em> của tớ,
+          </div>
 
-        <p class="hint-small">*Nút "Không" có vẻ hơi bướng bỉnh đấy nhé!*</p>
-      </div>
-    </section>
+          <div class="letter-body-animated" id="letterBodyText">
+            <!-- Chữ sẽ được gõ mượt mà -->
+          </div>
 
-    <!-- GIAI ĐOẠN 3: KHI BẤM ĐỒNG Ý - THIỆP CHÚC MỪNG VÀ PHÁO HOA -->
-    <section id="acceptedSection" class="hidden-stage">
-      <div class="glass-card success-box">
-        <div class="celebrate-badge">🎉 YÊUUU QUÁAA! 🎉</div>
-        
-        <div class="happy-couple-icon">
-          <span>👩‍❤️‍👨</span>
-        </div>
-
-        <h2 class="success-title">
-          Yeahhh! Cảm ơn <span class="highlight crush-name-text">Kim Phụng</span> vì đã đồng ý! 🥰
-        </h2>
-
-        <div class="love-letter-paper">
-          <div class="paper-pin">📌</div>
-          <p class="love-letter-content" id="loveMessageBody">
-            Từ giây phút này, cậu chính là điều ngọt ngào nhất trong cuộc sống của tớ. Tớ hứa sẽ luôn quan tâm, yêu thương, lắng nghe và mang lại thật nhiều niềm vui cho cậu mỗi ngày! 💕
-          </p>
-          <div class="letter-footer">
-            <span>Thương cậu thật nhiều,</span>
-            <strong id="senderNameText">Minh</strong>
+          <div class="letter-sign-off">
+            <span class="sign-date">Mãi yêu cậu,</span>
+            <span class="sign-author" id="senderNameDisplay">Minh</span>
           </div>
         </div>
 
-        <div class="after-action-buttons">
-          <button id="replayBtn" class="btn btn-secondary">Xem lại từ đầu 🔄</button>
+        <div class="success-actions">
+          <button id="replayBtn" class="action-btn-soft">
+            <span>Mở lại bức thư 💌</span>
+          </button>
         </div>
+
       </div>
     </section>
+
   </main>
 
   <script src="script.js"></script>
